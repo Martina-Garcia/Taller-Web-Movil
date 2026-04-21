@@ -1,45 +1,574 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PickingApp</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/estilos.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PickMart — Sistema de Picking</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-light">
+<body>
 
-    <header class="bg-primary bg-gradient text-white p-3 mb-4">
-        <div class="container">
-            <h1>Ruta de Picking</h1>
+<!-- ═══ SIDEBAR ═════════════════════════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">P</div>
+    <div>
+      <div class="logo-text">PickMart</div>
+      <div class="logo-sub">Sistema de Picking</div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">General</div>
+    <div class="nav-item active" onclick="navigate('dashboard')">
+      <i class="fa-solid fa-chart-line"></i> Dashboard
+    </div>
+
+    <div class="nav-section-label">Maestros</div>
+    <div class="nav-item" onclick="navigate('productos')">
+      <i class="fa-solid fa-box"></i> Productos
+    </div>
+    <div class="nav-item" onclick="navigate('pasillos')">
+      <i class="fa-solid fa-map"></i> Pasillos
+    </div>
+    <div class="nav-item" onclick="navigate('trabajadores')">
+      <i class="fa-solid fa-user-hard-hat"></i> Trabajadores
+    </div>
+
+    <div class="nav-section-label">Operaciones</div>
+    <div class="nav-item" onclick="navigate('pedidos')">
+      <i class="fa-solid fa-clipboard-list"></i> Pedidos
+      <span class="nav-badge" id="pendientes-badge">3</span>
+    </div>
+    <div class="nav-item" onclick="navigate('picking')">
+      <i class="fa-solid fa-cart-flatbed"></i> Lista de Picking
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-chip">
+      <div class="user-avatar">CM</div>
+      <div>
+        <div class="user-name">Carlos M.</div>
+        <div class="user-role">Picker · Turno A</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══ MAIN ════════════════════════════════════════════════════════════════ -->
+<main class="main">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-title" id="topbar-title">Dashboard</div>
+    <div class="topbar-search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" placeholder="Buscar…" id="global-search">
+    </div>
+    <button class="btn-icon" title="Notificaciones"><i class="fa-regular fa-bell"></i></button>
+    <button class="btn-icon" title="Ajustes"><i class="fa-solid fa-gear"></i></button>
+  </header>
+
+  <div class="content">
+
+    <!-- ══ DASHBOARD ══════════════════════════════ -->
+    <div class="view active" id="view-dashboard">
+      <div class="page-header">
+        <div>
+          <div class="page-title">¡Buen día, Carlos! 👋</div>
+          <div class="page-desc">Resumen del turno · Lunes 20 de abril, 2026</div>
         </div>
-    </header>
+        <button class="btn btn-dark" onclick="navigate('picking')">
+          <i class="fa-solid fa-play"></i> Iniciar Turno
+        </button>
+      </div>
 
-    <main class="container">
-        
-        <section class="mb-5 bg-white p-4 rounded shadow-sm">
-            <h2>Agregar Sustituto</h2>
-            <form id="formularioSustituto" class="row g-2 mt-2">
-                <div class="col-md-5">
-                    <input type="text" id="inputNombre" class="form-control" placeholder="Nombre del producto" required>
-                </div>
-                <div class="col-md-5">
-                    <input type="text" id="inputPasillo" class="form-control" placeholder="Ubicación (Ej: Pasillo 3)" required>
-                </div>
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-primary w-100">Guardar</button>
-                </div>
-            </form>
-        </section>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon si-orange"><i class="fa-solid fa-clock"></i></div>
+          <div class="stat-label">Pendientes</div>
+          <div class="stat-value" style="color:var(--orange)">3</div>
+          <div class="stat-sub">por procesar hoy</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon si-blue"><i class="fa-solid fa-spinner"></i></div>
+          <div class="stat-label">En Proceso</div>
+          <div class="stat-value" style="color:var(--blue)">2</div>
+          <div class="stat-sub">en picking ahora</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon si-green"><i class="fa-solid fa-check-circle"></i></div>
+          <div class="stat-label">Completados</div>
+          <div class="stat-value" style="color:var(--green-mid)">14</div>
+          <div class="stat-sub">en las últimas 24 hrs</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon si-red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          <div class="stat-label">Sin Stock</div>
+          <div class="stat-value" style="color:var(--red)">5</div>
+          <div class="stat-sub">productos a reponer</div>
+        </div>
+      </div>
 
-        <section>
-            <h2>Artículos del Pedido</h2>
-            <div id="listaProductos" class="row mt-3">
-                </div>
-        </section>
+      <div class="dash-grid">
+        <div class="panel">
+          <div class="panel-head">
+            <i class="fa-solid fa-clipboard-list" style="color:var(--green-acc)"></i>
+            <h3>Pedidos Recientes</h3>
+            <button class="btn btn-sm btn-outline" onclick="navigate('pedidos')">Ver todos</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr>
+                <th>#</th><th>Cliente</th><th>Productos</th><th>Estado</th><th>Picker</th>
+              </tr></thead>
+              <tbody id="dash-orders-table"></tbody>
+            </table>
+          </div>
+        </div>
 
-    </main>
+        <div class="panel">
+          <div class="panel-head">
+            <i class="fa-solid fa-triangle-exclamation" style="color:var(--orange)"></i>
+            <h3>Bajo Stock</h3>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Producto</th><th>Pasillo</th><th>Stock</th></tr></thead>
+              <tbody id="low-stock-table"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <script src="js/app.js"></script>
+    <!-- ══ PRODUCTOS ══════════════════════════════ -->
+    <div class="view" id="view-productos">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Productos</div>
+          <div class="page-desc">Gestión del catálogo de productos y ubicaciones en tienda</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('modal-producto')">
+          <i class="fa-solid fa-plus"></i> Nuevo Producto
+        </button>
+      </div>
+      <div class="panel">
+        <div class="filters-bar">
+          <div class="filter-input">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Buscar producto…" oninput="filterTable('productos-table', this.value)">
+          </div>
+          <div class="filter-input">
+            <i class="fa-solid fa-filter"></i>
+            <select onchange="filterByCategory(this.value)">
+              <option value="">Todas las categorías</option>
+              <option>Lácteos</option><option>Bebidas</option><option>Panadería</option>
+              <option>Carnes</option><option>Frutas y Verduras</option>
+              <option>Limpieza</option><option>Snacks</option><option>Congelados</option>
+            </select>
+          </div>
+          <div style="margin-left:auto;font-size:13px;color:var(--text-muted)" id="productos-count"></div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>Código</th><th>Nombre</th><th>Categoría</th>
+              <th>Pasillo</th><th>Estante</th><th>Stock</th><th>Estado</th><th>Acciones</th>
+            </tr></thead>
+            <tbody id="productos-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PASILLOS ═══════════════════════════════ -->
+    <div class="view" id="view-pasillos">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Pasillos</div>
+          <div class="page-desc">Mapa de secciones y pasillos de la tienda</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('modal-pasillo')">
+          <i class="fa-solid fa-plus"></i> Nuevo Pasillo
+        </button>
+      </div>
+      <div class="panel">
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>N°</th><th>Nombre del Pasillo</th><th>Categoría</th>
+              <th>Nº Estantes</th><th>Productos</th><th>Estado</th><th>Acciones</th>
+            </tr></thead>
+            <tbody id="pasillos-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TRABAJADORES ════════════════════════════ -->
+    <div class="view" id="view-trabajadores">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Trabajadores</div>
+          <div class="page-desc">Gestión del equipo de pickers</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('modal-trabajador')">
+          <i class="fa-solid fa-plus"></i> Nuevo Trabajador
+        </button>
+      </div>
+      <div class="panel">
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>ID</th><th>Nombre</th><th>Turno</th>
+              <th>Pedidos Hoy</th><th>Pedido Actual</th><th>Estado</th><th>Acciones</th>
+            </tr></thead>
+            <tbody id="trabajadores-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PEDIDOS ════════════════════════════════ -->
+    <div class="view" id="view-pedidos">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Pedidos</div>
+          <div class="page-desc">Control y seguimiento de órdenes de compra</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('modal-pedido')">
+          <i class="fa-solid fa-plus"></i> Nuevo Pedido
+        </button>
+      </div>
+      <div class="panel">
+        <div class="filters-bar">
+          <div class="filter-input">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Buscar cliente…" oninput="filterTable('pedidos-table', this.value)">
+          </div>
+          <div class="filter-input">
+            <i class="fa-solid fa-circle-half-stroke"></i>
+            <select onchange="filterPedidoStatus(this.value)">
+              <option value="">Todos los estados</option>
+              <option>Pendiente</option><option>En Proceso</option>
+              <option>Completado</option><option>Cancelado</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>#</th><th>Cliente</th><th>Fecha</th><th>Entrega</th>
+              <th>Productos</th><th>Picker</th><th>Estado</th><th>Acciones</th>
+            </tr></thead>
+            <tbody id="pedidos-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PICKING ════════════════════════════════ -->
+    <div class="view" id="view-picking">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Lista de Picking</div>
+          <div class="page-desc">Productos ordenados por pasillo y estante para máxima eficiencia</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <select class="filter-input" id="picking-order-select" onchange="renderPicking()"
+            style="padding:8px 12px;border-radius:8px;border:1.5px solid var(--border);font-family:'DM Sans',sans-serif;font-size:13px">
+            <option value="">— Seleccionar pedido —</option>
+          </select>
+          <button class="btn btn-primary" onclick="printPicking()">
+            <i class="fa-solid fa-print"></i> Imprimir
+          </button>
+        </div>
+      </div>
+      <div id="picking-container">
+        <div class="empty-state panel" style="border-radius:var(--radius)">
+          <i class="fa-solid fa-cart-flatbed"></i>
+          <p>Selecciona un pedido para generar la lista de picking optimizada</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</main>
+
+<!-- ═══ MODALS ═══════════════════════════════════════════════════════════════ -->
+
+<!-- Modal: Producto -->
+<div class="modal-overlay" id="modal-producto">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="stat-icon si-green" style="margin-bottom:0;width:36px;height:36px;font-size:15px">
+        <i class="fa-solid fa-box"></i>
+      </div>
+      <h3 id="modal-producto-title">Nuevo Producto</h3>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Código de Barra</label>
+          <div class="input-with-icon">
+            <i class="fa-solid fa-barcode"></i>
+            <input type="text" id="prod-codigo" placeholder="7800001XXXXXX">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Nombre del Producto</label>
+          <input type="text" id="prod-nombre" placeholder="Ej: Leche Entera 1L">
+        </div>
+        <div class="form-group">
+          <label>Categoría</label>
+          <select id="prod-categoria">
+            <option>Lácteos</option><option>Bebidas</option><option>Panadería</option>
+            <option>Carnes</option><option>Frutas y Verduras</option>
+            <option>Limpieza</option><option>Snacks</option><option>Congelados</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Marca</label>
+          <input type="text" id="prod-marca" placeholder="Ej: Colun">
+        </div>
+        <div class="form-group">
+          <label>Pasillo</label>
+          <select id="prod-pasillo"></select>
+        </div>
+        <div class="form-group">
+          <label>Estante / Posición</label>
+          <input type="text" id="prod-estante" placeholder="Ej: A3, B1">
+        </div>
+        <div class="form-group">
+          <label>Stock Actual</label>
+          <input type="number" id="prod-stock" placeholder="0" min="0">
+        </div>
+        <div class="form-group">
+          <label>Stock Mínimo</label>
+          <input type="number" id="prod-stock-min" placeholder="5" min="0">
+        </div>
+        <div class="form-group">
+          <label>Unidad</label>
+          <select id="prod-unidad">
+            <option>un</option><option>kg</option><option>L</option><option>g</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Estado</label>
+          <select id="prod-estado">
+            <option>Activo</option><option>Sin Stock</option><option>Discontinuado</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('modal-producto')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveProducto()">
+        <i class="fa-solid fa-check"></i> Guardar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Pasillo -->
+<div class="modal-overlay" id="modal-pasillo">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="stat-icon si-blue" style="margin-bottom:0;width:36px;height:36px;font-size:15px">
+        <i class="fa-solid fa-map"></i>
+      </div>
+      <h3 id="modal-pasillo-title">Nuevo Pasillo</h3>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Número de Pasillo</label>
+          <input type="number" id="pas-numero" min="1" placeholder="1">
+        </div>
+        <div class="form-group">
+          <label>Nombre del Pasillo</label>
+          <input type="text" id="pas-nombre" placeholder="Ej: Lácteos y Huevos">
+        </div>
+        <div class="form-group">
+          <label>Categoría Principal</label>
+          <select id="pas-categoria">
+            <option>Lácteos</option><option>Bebidas</option><option>Panadería</option>
+            <option>Carnes</option><option>Frutas y Verduras</option>
+            <option>Limpieza</option><option>Snacks</option><option>Congelados</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Número de Estantes</label>
+          <input type="number" id="pas-estantes" min="1" placeholder="4">
+        </div>
+        <div class="form-group">
+          <label>Color identificador</label>
+          <input type="color" id="pas-color" value="#52b788" style="height:40px;cursor:pointer">
+        </div>
+        <div class="form-group">
+          <label>Estado</label>
+          <select id="pas-estado">
+            <option>Activo</option><option>En Reposición</option><option>Bloqueado</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Notas / Descripción</label>
+          <textarea id="pas-notas" placeholder="Información adicional del pasillo…"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('modal-pasillo')">Cancelar</button>
+      <button class="btn btn-primary" onclick="savePasillo()">
+        <i class="fa-solid fa-check"></i> Guardar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Trabajador -->
+<div class="modal-overlay" id="modal-trabajador">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="stat-icon si-orange" style="margin-bottom:0;width:36px;height:36px;font-size:15px">
+        <i class="fa-solid fa-user"></i>
+      </div>
+      <h3 id="modal-trabajador-title">Nuevo Trabajador</h3>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" id="trab-nombre" placeholder="Nombre completo">
+        </div>
+        <div class="form-group">
+          <label>RUT</label>
+          <input type="text" id="trab-rut" placeholder="12.345.678-9">
+        </div>
+        <div class="form-group">
+          <label>Turno</label>
+          <select id="trab-turno">
+            <option>Turno A (08:00-16:00)</option>
+            <option>Turno B (16:00-00:00)</option>
+            <option>Turno C (00:00-08:00)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Rol</label>
+          <select id="trab-rol">
+            <option>Picker</option><option>Supervisor</option><option>Despachador</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="text" id="trab-tel" placeholder="+56 9 XXXX XXXX">
+        </div>
+        <div class="form-group">
+          <label>Estado</label>
+          <select id="trab-estado">
+            <option>Activo</option><option>Inactivo</option><option>Vacaciones</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('modal-trabajador')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveTrabajador()">
+        <i class="fa-solid fa-check"></i> Guardar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Pedido -->
+<div class="modal-overlay" id="modal-pedido">
+  <div class="modal" style="max-width:640px">
+    <div class="modal-head">
+      <div class="stat-icon si-blue" style="margin-bottom:0;width:36px;height:36px;font-size:15px">
+        <i class="fa-solid fa-clipboard-list"></i>
+      </div>
+      <h3 id="modal-pedido-title">Nuevo Pedido</h3>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Cliente</label>
+          <input type="text" id="ped-cliente" placeholder="Nombre del cliente">
+        </div>
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="text" id="ped-tel" placeholder="+56 9 XXXX XXXX">
+        </div>
+        <div class="form-group full">
+          <label>Dirección de entrega</label>
+          <input type="text" id="ped-dir" placeholder="Calle, número, departamento…">
+        </div>
+        <div class="form-group">
+          <label>Tipo de entrega</label>
+          <select id="ped-entrega">
+            <option>Retiro en tienda</option>
+            <option>Despacho a domicilio</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Picker asignado</label>
+          <select id="ped-picker"></select>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="font-weight:600;font-size:14px">Productos del pedido</div>
+        <button class="btn btn-sm btn-outline" onclick="addPedidoLine()">
+          <i class="fa-solid fa-plus"></i> Agregar
+        </button>
+      </div>
+      <div id="pedido-lines"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('modal-pedido')">Cancelar</button>
+      <button class="btn btn-primary" onclick="savePedido()">
+        <i class="fa-solid fa-check"></i> Guardar Pedido
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Confirmar Eliminación -->
+<div class="modal-overlay" id="modal-confirm">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-head">
+      <div class="stat-icon si-red" style="margin-bottom:0;width:36px;height:36px;font-size:15px">
+        <i class="fa-solid fa-trash"></i>
+      </div>
+      <h3>Confirmar eliminación</h3>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:14px;color:var(--text-mid)" id="confirm-msg">
+        ¿Estás seguro de que deseas eliminar este registro?
+      </p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('modal-confirm')">Cancelar</button>
+      <button class="btn btn-danger" id="confirm-ok-btn">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- Scripts -->
+<script src="js/app.js"></script>
 </body>
 </html>
