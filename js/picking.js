@@ -119,6 +119,19 @@ function togglePickItem(el) {
   el.classList.toggle('checked');
   const picked = el.classList.contains('checked');
   toast(picked ? '✓ Producto recogido' : 'Producto desmarcado', picked ? 'success' : '');
+
+  // --- NUEVO: Actualizar barra de progreso dinámica ---
+  const section = el.closest('.picking-section');
+  const totalItems = section.querySelectorAll('.picking-item').length;
+  const checkedItems = section.querySelectorAll('.picking-item.checked').length;
+  
+  // Actualizar el texto (Ej: "2 / 5")
+  const progressText = section.querySelector('.aisle-progress div:first-child');
+  if (progressText) progressText.textContent = `${checkedItems} / ${totalItems}`;
+  
+  // Actualizar la barra visual
+  const progressFill = section.querySelector('.aisle-progress-fill');
+  if (progressFill) progressFill.style.width = `${(checkedItems / totalItems) * 100}%`;
 }
 
 function printPicking() {
