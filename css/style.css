@@ -393,3 +393,30 @@ tbody td:first-child { color: var(--text); font-weight: 500; }
   .content { padding: 16px; }
   .stats-grid { grid-template-columns: 1fr; }
 }
+
+/* ─── IMPRESIÓN ───────────────────────────────── */
+@media print {
+  /* Ocultar elementos de navegación y botones inútiles en papel */
+  .sidebar, .topbar, .btn, .toast-container, .topbar-search { 
+    display: none !important; 
+  }
+  
+  /* Quitar el margen del menú lateral para usar toda la hoja */
+  .main { 
+    margin-left: 0 !important; 
+  }
+  
+  /* Ajustes de color para ahorrar tinta */
+  body { 
+    background: #fff; 
+  }
+  .panel { 
+    box-shadow: none; 
+    border: 1px solid #000; 
+  }
+  .picking-aisle-header {
+    background: #eee !important;
+    color: #000 !important;
+    border: 1px solid #ccc;
+  }
+}
