@@ -36,4 +36,6 @@ function renderAll() {
 }
 
 // ─── Init ────────────────────────────────
-renderAll();
+if(document.getElementById('view-dashboard')){
+  renderAll();
+}

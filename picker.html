@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <!-- viewport: ancho del dispositivo, sin zoom inicial, sin zoom táctil -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <!-- Hace que se vea como app nativa en iOS al guardar en pantalla de inicio -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#1a3a2a">
+
+  <title>PickMart</title>
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/picker.css">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     PANTALLA 1 — LOGIN
+════════════════════════════════════════════════ -->
+<div class="screen active" id="screen-login">
+  <div class="login-box">
+    <div class="login-logo">P</div>
+    <div class="login-title">PickMart</div>
+    <div class="login-sub">¿Quién eres hoy?</div>
+
+    <div class="login-label">Selecciona tu nombre</div>
+    <div class="login-cards" id="login-cards">
+      <!-- Generado por picker.js -->
+    </div>
+
+    <button class="btn-login" id="btn-login" onclick="doLogin()" disabled>
+      <i class="fa-solid fa-arrow-right-to-bracket"></i>
+      Entrar al turno
+    </button>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     PANTALLA 2 — HOME
+════════════════════════════════════════════════ -->
+<div class="screen" id="screen-home">
+  <header class="app-header">
+    <div class="app-header-logo">P</div>
+    <div class="app-header-title">Inicio</div>
+  </header>
+
+  <div class="screen-body">
+    <div id="home-banner"></div>
+    <div id="home-stats"></div>
+    <div id="home-next"></div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" id="nav-home" onclick="goTab('home')">
+      <i class="fa-solid fa-house"></i>
+      Inicio
+    </button>
+    <button class="nav-btn" id="nav-orders" onclick="goTab('orders')">
+      <i class="fa-solid fa-clipboard-list"></i>
+      Pedidos
+      <div class="nav-dot" id="orders-dot"></div>
+    </button>
+    <button class="nav-btn" id="nav-completed" onclick="goTab('completed')">
+      <i class="fa-solid fa-circle-check"></i>
+      Completados
+    </button>
+  </nav>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     PANTALLA 3 — MIS PEDIDOS
+════════════════════════════════════════════════ -->
+<div class="screen" id="screen-orders">
+  <header class="app-header">
+    <div class="app-header-logo">P</div>
+    <div class="app-header-title" id="orders-header">Mis Pedidos</div>
+  </header>
+
+  <div class="screen-body">
+    <div id="orders-list"></div>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn" id="nav-home" onclick="goTab('home')">
+      <i class="fa-solid fa-house"></i>
+      Inicio
+    </button>
+    <button class="nav-btn active" id="nav-orders" onclick="goTab('orders')">
+      <i class="fa-solid fa-clipboard-list"></i>
+      Pedidos
+      <div class="nav-dot" id="orders-dot" style="display:none"></div>
+    </button>
+    <button class="nav-btn" id="nav-completed" onclick="goTab('completed')">
+      <i class="fa-solid fa-circle-check"></i>
+      Completados
+    </button>
+  </nav>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     PANTALLA 4 — PICKING ACTIVO
+════════════════════════════════════════════════ -->
+<div class="screen" id="screen-picking" style="padding-bottom:0">
+  <!-- Header con botón back -->
+  <header class="app-header">
+    <button class="app-header-action header-back" onclick="backToOrders()">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    <div class="app-header-title" id="picking-title">Picking</div>
+  </header>
+
+  <!-- Barra de progreso fija -->
+  <div class="progress-wrap">
+    <div class="progress-top">
+      <span class="progress-label" id="progress-text">0 de 0 productos</span>
+      <span style="font-size:13px;font-weight:700;color:var(--green-mid)" id="progress-pct">0%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- Lista de productos scrolleable -->
+  <div class="screen-body" style="padding:12px">
+    <div id="picking-list"></div>
+  </div>
+
+  <!-- Botón completar fijo abajo -->
+  <div class="complete-bar">
+    <button class="btn btn-primary btn-full btn-lg" id="btn-complete"
+            onclick="completePicking()" disabled style="opacity:.45">
+      <i class="fa-solid fa-circle-check"></i>
+      Completar Pedido
+    </button>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     PANTALLA 5 — COMPLETADOS
+════════════════════════════════════════════════ -->
+<div class="screen" id="screen-completed">
+  <header class="app-header">
+    <div class="app-header-logo">P</div>
+    <div class="app-header-title">Completados</div>
+  </header>
+
+  <div class="screen-body">
+    <div id="completed-list"></div>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn" id="nav-home" onclick="goTab('home')">
+      <i class="fa-solid fa-house"></i>
+      Inicio
+    </button>
+    <button class="nav-btn" id="nav-orders" onclick="goTab('orders')">
+      <i class="fa-solid fa-clipboard-list"></i>
+      Pedidos
+    </button>
+    <button class="nav-btn active" id="nav-completed" onclick="goTab('completed')">
+      <i class="fa-solid fa-circle-check"></i>
+      Completados
+    </button>
+  </nav>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     PANTALLA 6 — PEDIDO COMPLETADO (celebración)
+════════════════════════════════════════════════ -->
+<div class="screen" id="screen-done">
+  <div class="done-icon">
+    <i class="fa-solid fa-check"></i>
+  </div>
+  <div class="done-title">¡Pedido listo! 🎉</div>
+  <div class="done-sub">El pedido ha sido preparado<br>y está listo para entrega.</div>
+
+  <div class="done-summary">
+    <div class="ds-row">
+      <span>Pedido</span>
+      <span id="done-num">—</span>
+    </div>
+    <div class="ds-row">
+      <span>Cliente</span>
+      <span id="done-client">—</span>
+    </div>
+    <div class="ds-row">
+      <span>Productos</span>
+      <span id="done-items">—</span>
+    </div>
+    <div class="ds-row">
+      <span>Tipo entrega</span>
+      <span id="done-entrega">—</span>
+    </div>
+  </div>
+
+  <button class="btn btn-primary btn-lg" onclick="backToOrders()" style="width:100%;max-width:340px">
+    <i class="fa-solid fa-arrow-left"></i>
+    Volver a mis pedidos
+  </button>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     MODAL — Producto sin stock
+════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-sinstock" onclick="if(event.target===this)closeSinStock()">
+  <div class="modal-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">
+      <i class="fa-solid fa-triangle-exclamation" style="color:var(--orange)"></i>
+      Producto sin stock
+    </div>
+    <div class="sheet-body">
+      <strong id="sinstock-name"></strong> está marcado como sin stock en el sistema.
+      ¿Pudiste encontrarlo en el pasillo de todas formas?
+    </div>
+    <div class="sheet-btns">
+      <button class="btn btn-primary btn-full" onclick="markSinStockOk()">
+        <i class="fa-solid fa-check"></i> Sí, lo encontré — marcar como recogido
+      </button>
+      <button class="btn btn-outline btn-full" onclick="closeSinStock()">
+        No, confirmar que no hay stock
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- Scripts: primero los datos compartidos, luego la lógica del picker -->
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/picker.js"></script>
+</body>
+</html>
