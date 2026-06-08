@@ -1,51 +1,98 @@
-# PickMart — Sistema de Picking 
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+</p>
 
-**PickMart** es una aplicación web responsiva (Single Page Application) desarrollada con HTML, CSS y JavaScript puro (Vanilla JS). Está diseñada para optimizar y gestionar el proceso de preparación de pedidos (*picking*) en tiendas, supermercados o bodegas, facilitando la administración del inventario y guiando a los trabajadores por las rutas más eficientes
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
 
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-##  Características Principales
+## Description
 
-La aplicación está dividida en varios módulos accesibles desde una barra lateral de navegación:
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-*  **Dashboard:** Panel de control principal con métricas en tiempo real (pedidos pendientes, en proceso, completados), tabla de pedidos recientes y alertas visuales de productos con bajo stock
-*  **Gestión de Productos:** Inventario detallado. Permite crear, editar, buscar y filtrar productos. Cada producto tiene información de código de barras, categoría, stock actual/mínimo y su ubicación exacta (pasillo y estante)
-*  **Gestión de Pasillos:** Configuración de la estructura de la tienda. Los pasillos se pueden personalizar con nombres, colores, número de estantes y categorías, lo que resulta vital para el ruteo posterior
-*  **Trabajadores:** Administración del equipo de *pickers* y supervisores, controlando sus turnos, roles, datos de contacto y estado operativo
-*  **Control de Pedidos:** Módulo para registrar nuevas órdenes de compra. Permite asignar un cliente, dirección, tipo de entrega (retiro/despacho), el trabajador encargado y agregar las líneas de productos necesarios
-*  **Lista de Picking Optimizada:** La funcionalidad principal (Core) del sistema. Al seleccionar un pedido, genera una ruta de recolección **agrupada por pasillo y ordenada por estante**
-    * Incluye barras de progreso
-    * Casillas interactivas para marcar los productos ya recogidos
-    * Opción de impresión optimizada para llevar el registro físico
+## Project setup
 
+```bash
+$ npm install
+```
 
-##  Tecnologías Utilizadas
+## Compile and run the project
 
-Este proyecto fue construido sin el uso de frameworks pesados:
+```bash
+# development
+$ npm run start
 
-* **Estructura:** HTML5 semántico
-* **Estilos:** CSS3
-    * Uso de variables globales (Custom Properties) para paletas de colores y espaciados (`:root`)
-    * Sistemas de diseño modernos: **Flexbox** y **CSS Grid**
-    * Diseño completamente Responsivo (adaptable a dispositivos móviles y tablets mediante Media Queries)
-    * Animaciones y transiciones suaves (`@keyframes`)
-* **Lógica y Dinamismo:** JavaScript
-    * Manipulación dinámica del DOM
-    * Sistema de navegación tipo SPA (Single Page Application) alternando clases `.active`
-    * Gestión de estado en memoria (Mock Data)
-    * Funciones de búsqueda y filtrado en tiempo real
-* **Tipografía e Iconografía:**
-    * [Google Fonts](https://fonts.google.com/): *Rajdhani* (títulos/números), *DM Sans* (cuerpo) y *DM Mono* (códigos)
-    * [FontAwesome 6.5.0](https://fontawesome.com/): Iconografía de la interfaz
+# watch mode
+$ npm run start:dev
 
+# production mode
+$ npm run start:prod
+```
 
+## Run tests
 
-## Estructura del Proyecto
+```bash
+# unit tests
+$ npm run test
 
-```text
-Taller-Web-Movil/
-├── index.html        # Estructura principal y plantillas de las vistas (SPA)
-├── css/
-│   └── styles.css    # Hojas de estilo (variables, layouts, componentes, responsive)
-├── js/
-│   └── app.js        # Lógica de la aplicación, datos iniciales (mock) y renderizado
-└── README.md         # Documentación del proyecto
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
+```
+
+## Deployment
+
+When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+
+If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+
+```bash
+$ npm install -g @nestjs/mau
+$ mau deploy
+```
+
+With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+
+## Resources
+
+Check out a few resources that may come in handy when working with NestJS:
+
+- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
+- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
+- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
+- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
+- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
+- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
+- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
+- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+
+## Support
+
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+
+## Stay in touch
+
+- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
+
+## License
+
+Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
