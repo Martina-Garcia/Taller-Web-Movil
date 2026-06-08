@@ -38,17 +38,17 @@ Este proyecto fue construido sin el uso de frameworks pesados:
     * [FontAwesome 6.5.0](https://fontawesome.com/): Iconografía de la interfaz
       
 ##   Pasos para correr proyecto
-** Clonar el repositorio.
-** Instalar las dependencias:
+* ** Clonar el repositorio.
+* ** Instalar las dependencias:
       *npm install
-** Configurar el entorno:
+* ** Configurar el entorno:
    Copiar .env.example a .env.
-** Encender la base de datos:
+* ** Encender la base de datos:
       *docker-compose up -d.
-* Generar el cliente de Prisma y correr las migraciones:
+* ** Generar el cliente de Prisma y correr las migraciones:
       *npx prisma generate
       *npx prisma migrate dev.
-* Iniciar la aplicación:
+* ** Iniciar la aplicación:
       *npm run start:dev
 
 
