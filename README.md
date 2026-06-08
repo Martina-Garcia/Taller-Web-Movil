@@ -36,7 +36,20 @@ Este proyecto fue construido sin el uso de frameworks pesados:
 * **Tipografía e Iconografía:**
     * [Google Fonts](https://fonts.google.com/): *Rajdhani* (títulos/números), *DM Sans* (cuerpo) y *DM Mono* (códigos)
     * [FontAwesome 6.5.0](https://fontawesome.com/): Iconografía de la interfaz
-
+      
+##   Pasos para correr proyecto
+** Clonar el repositorio.
+** Instalar las dependencias:
+      *npm install
+** Configurar el entorno:
+   Copiar .env.example a .env.
+** Encender la base de datos:
+      *docker-compose up -d.
+* Generar el cliente de Prisma y correr las migraciones:
+      *npx prisma generate
+      *npx prisma migrate dev.
+* Iniciar la aplicación:
+      *npm run start:dev
 
 
 ## Estructura del Proyecto
@@ -50,16 +63,4 @@ Taller-Web-Movil/
 │   └── app.js        # Lógica de la aplicación, datos iniciales (mock) y renderizado
 └── README.md         # Documentación del proyecto
 
-##Pasos para correr proyecto
-** Clonar el repositorio.
-** Instalar las dependencias:
-      *npm install
-** Configurar el entorno:
-   Copiar .env.example a .env.
-** Encender la base de datos:
-      *docker-compose up -d.
-* Generar el cliente de Prisma y correr las migraciones:
-      *npx prisma generate
-      *npx prisma migrate dev.
-* Iniciar la aplicación:
-      *npm run start:dev
+
