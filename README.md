@@ -40,17 +40,18 @@ Este proyecto fue construido sin el uso de frameworks pesados:
 ##   Pasos para correr proyecto
 * ** Clonar el repositorio.
 * ** Instalar las dependencias:
-      *npm install
+   * npm install
 * ** Configurar el entorno:
    Copiar .env.example a .env.
 * ** Encender la base de datos:
-      *docker-compose up -d.
+   * docker-compose up -d.
 * ** Generar el cliente de Prisma y correr las migraciones:
-      *npx prisma generate
-      *npx prisma migrate dev.
+   * npx prisma generate
+   * npx prisma migrate dev.
 * ** Iniciar la aplicación:
-      *npm run start:dev
-
+   * npm run start:dev
+* ** Ingresar desde el navegador a: 
+   * http://localhost:3000/api/docs
 
 ## Estructura del Proyecto
 
