@@ -35,7 +35,28 @@ function renderAll() {
   renderPickingSelect();
 }
 
-// ─── Init ────────────────────────────────
+async function fetchInitialData() {
+  try {
+    const [productos, pasillos, trabajadores, pedidos] = await Promise.all([
+      apiFetch('/products'),
+      apiFetch('/aisles'),
+      apiFetch('/workers'),
+      apiFetch('/orders')
+    ]);
+
+    data.productos = productos;
+    data.pasillos = pasillos;
+    data.trabajadores = trabajadores;
+    data.pedidos = pedidos;
+
+   
+    renderAll();
+  } catch (error) {
+    console.error("No se pudo cargar la data inicial", error);
+  }
+}
+
+// ─── INIT REEMPLAZADO ────────────────────────────────
 if(document.getElementById('view-dashboard')){
-  renderAll();
+  fetchInitialData();
 }

@@ -1,34 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { AislesService } from './aisles.service';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CreateAisleDto } from './dto/create-aisle.dto';
-import { UpdateAisleDto } from './dto/update-aisle.dto';
 
+@ApiTags('Pasillos y Ubicaciones')
 @Controller('aisles')
 export class AislesController {
-  constructor(private readonly aislesService: AislesService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Crear un nuevo pasillo en la tienda' })
+  @ApiResponse({ status: 201, description: 'Pasillo configurado con éxito.' })
   create(@Body() createAisleDto: CreateAisleDto) {
-    return this.aislesService.create(createAisleDto);
+    // ...
   }
 
-  @Get()
-  findAll() {
-    return this.aislesService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.aislesService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAisleDto: UpdateAisleDto) {
-    return this.aislesService.update(+id, updateAisleDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.aislesService.remove(+id);
+  @Get(':id/locations')
+  @ApiOperation({ summary: 'Obtener todos los estantes/ubicaciones de un pasillo específico' })
+  @ApiResponse({ status: 200, description: 'Retorna la lista de estantes asociados al pasillo.' })
+  getLocationsByAisle(@Param('id') id: string) {
+    // Lógica para devolver estantes (ej. A1, B2) asociados a este pasillo
   }
 }

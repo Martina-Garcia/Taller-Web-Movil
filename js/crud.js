@@ -17,16 +17,29 @@ function confirmDelete(type, id, name) {
   document.getElementById('confirm-msg').textContent =
     `¿Estás seguro de que deseas eliminar "${name}"? Esta acción no se puede deshacer.`;
 
-  document.getElementById('confirm-ok-btn').onclick = () => {
-    if (type === 'producto')   data.productos    = data.productos.filter(x => x.id !== id);
-    if (type === 'pasillo')    data.pasillos     = data.pasillos.filter(x => x.id !== id);
-    if (type === 'trabajador') data.trabajadores = data.trabajadores.filter(x => x.id !== id);
-    if (type === 'pedido')     data.pedidos      = data.pedidos.filter(x => x.id !== id);
-    closeModal('modal-confirm');
-    renderAll();
-    toast('Registro eliminado', 'error');
-  };
+  document.getElementById('confirm-ok-btn').onclick = async () => {
+    try {
+      let endpoint = '';
+      
+      // Asignar el endpoint correcto según el tipo
+      if (type === 'producto')   endpoint = `/products/${id}`;
+      if (type === 'pasillo')    endpoint = `/aisles/${id}`;
+      if (type === 'trabajador') endpoint = `/workers/${id}`;
+      if (type === 'pedido')     endpoint = `/orders/${id}`;
 
+      // Petición DELETE
+      await apiFetch(endpoint, 'DELETE');
+      
+      closeModal('modal-confirm');
+      toast('Registro eliminado');
+      
+      // Volver a cargar la data completa para asegurar sincronía con DB
+      await fetchInitialData(); 
+      
+    } catch (error) {
+      toast('No se pudo eliminar el registro', 'error');
+    }
+  };
   openModal('modal-confirm');
 }
 
@@ -50,7 +63,7 @@ function editProducto(id) {
   openModal('modal-producto');
 }
 
-function saveProducto() {
+async function saveProducto() {
   const vals = {
     codigo:    document.getElementById('prod-codigo').value.trim(),
     nombre:    document.getElementById('prod-nombre').value.trim(),
@@ -66,20 +79,29 @@ function saveProducto() {
   if (!vals.nombre || !vals.codigo) { toast('Completa los campos requeridos', 'error'); return; }
 
   const id = editingId['modal-producto'];
-  if (id) {
-    const idx = data.productos.findIndex(x => x.id === id);
-    data.productos[idx] = { ...data.productos[idx], ...vals };
-    toast('Producto actualizado');
-  } else {
-    data.productos.push({ id: Date.now(), ...vals });
-    toast('Producto creado');
-  }
+
+
+
+try {
+    if (id) {
+      // Petición PATCH para actualizar
+      await apiFetch(`/products/${id}`, 'PATCH', vals);
+      toast('Producto actualizado');
+    } else {
+      // Petición POST para crear
+      await apiFetch(`/products`, 'POST', vals);
+      toast('Producto creado');
+    }
 
   closeModal('modal-producto');
+  data.productos = await apiFetch('/products');
   renderAll();
   document.getElementById('modal-producto-title').textContent = 'Nuevo Producto';
   ['prod-codigo','prod-nombre','prod-marca','prod-estante','prod-stock','prod-stock-min']
     .forEach(fId => { document.getElementById(fId).value = ''; });
+}catch (error) {
+    toast('Error al guardar el producto', 'error');
+  }
 }
 
 /* ─── CRUD: Pasillo ─────────────────────── */
@@ -98,7 +120,7 @@ function editPasillo(id) {
   openModal('modal-pasillo');
 }
 
-function savePasillo() {
+async function savePasillo() {
   const vals = {
     numero:    parseInt(document.getElementById('pas-numero').value) || 0,
     nombre:    document.getElementById('pas-nombre').value.trim(),
@@ -111,20 +133,31 @@ function savePasillo() {
   if (!vals.nombre) { toast('El nombre es requerido', 'error'); return; }
 
   const id = editingId['modal-pasillo'];
-  if (id) {
-    const idx = data.pasillos.findIndex(x => x.id === id);
-    data.pasillos[idx] = { ...data.pasillos[idx], ...vals };
-    toast('Pasillo actualizado');
-  } else {
-    data.pasillos.push({ id: Date.now(), ...vals });
-    toast('Pasillo creado');
-  }
 
-  closeModal('modal-pasillo');
-  renderAll();
-  document.getElementById('modal-pasillo-title').textContent = 'Nuevo Pasillo';
-  ['pas-numero','pas-nombre','pas-estantes','pas-notas']
-    .forEach(fId => { document.getElementById(fId).value = ''; });
+
+ try {
+    if (id) {
+      await apiFetch(`/aisles/${id}`, 'PATCH', vals);
+      toast('Pasillo actualizado');
+    } else {
+      await apiFetch(`/aisles`, 'POST', vals);
+      toast('Pasillo creado');
+    }
+
+    closeModal('modal-pasillo');
+    
+    // Sincronizamos el estado local con la base de datos real
+    data.pasillos = await apiFetch('/aisles'); 
+    renderAll();
+    
+    // Limpiamos los inputs
+    document.getElementById('modal-pasillo-title').textContent = 'Nuevo Pasillo';
+    ['pas-numero','pas-nombre','pas-estantes','pas-notas']
+      .forEach(fId => { document.getElementById(fId).value = ''; });
+      
+  } catch (error) {
+    toast('Error al guardar el pasillo', 'error');
+  }
 }
 
 /* ─── CRUD: Trabajador ──────────────────── */
@@ -142,7 +175,7 @@ function editTrabajador(id) {
   openModal('modal-trabajador');
 }
 
-function saveTrabajador() {
+async function saveTrabajador() {
   const vals = {
     nombre: document.getElementById('trab-nombre').value.trim(),
     rut:    document.getElementById('trab-rut').value.trim(),
@@ -154,19 +187,25 @@ function saveTrabajador() {
   if (!vals.nombre) { toast('El nombre es requerido', 'error'); return; }
 
   const id = editingId['modal-trabajador'];
-  if (id) {
-    const idx = data.trabajadores.findIndex(x => x.id === id);
-    data.trabajadores[idx] = { ...data.trabajadores[idx], ...vals };
-    toast('Trabajador actualizado');
-  } else {
-    data.trabajadores.push({ id: Date.now(), ...vals, pedidosHoy: 0, pedidoActual: '-' });
-    toast('Trabajador creado');
+
+
+ try {
+    if (id) {
+      await apiFetch(`/workers/${id}`, 'PATCH', vals);
+      toast('Trabajador actualizado');
+    } else {
+      await apiFetch(`/workers`, 'POST', vals);
+      toast('Trabajador creado');
+    }
+
+    closeModal('modal-trabajador');
+    data.trabajadores = await apiFetch('/workers');
+    renderAll();
+    
+  } catch (error) {
+    toast('Error al guardar el trabajador', 'error');
   }
-
-  closeModal('modal-trabajador');
-  renderAll();
 }
-
 /* ─── CRUD: Pedido ──────────────────────── */
 function addPedidoLine(prodId = '', qty = 1) {
   pedidoLines.push({ lineId: Date.now() + Math.random(), prodId, qty });
@@ -222,7 +261,7 @@ function editPedido(id) {
   openModal('modal-pedido');
 }
 
-function savePedido() {
+async function savePedido() {
   const vals = {
     cliente:   document.getElementById('ped-cliente').value.trim(),
     tel:       document.getElementById('ped-tel').value.trim(),
@@ -235,17 +274,21 @@ function savePedido() {
   if (!vals.items.length) { toast('Agrega al menos un producto', 'error'); return; }
 
   const id = editingId['modal-pedido'];
-  if (id) {
-    const idx = data.pedidos.findIndex(x => x.id === id);
-    data.pedidos[idx] = { ...data.pedidos[idx], ...vals };
-    toast('Pedido actualizado');
-  } else {
-    const num = 'P-' + (2029 + data.pedidos.length);
-    data.pedidos.push({ id: Date.now(), num, fecha: new Date().toISOString().split('T')[0], estado: 'Pendiente', ...vals });
-    toast('Pedido creado');
-  }
+ try {
+    if (id) {
+      await apiFetch(`/orders/${id}`, 'PATCH', vals);
+      toast('Pedido actualizado');
+    } else {
+      await apiFetch(`/orders`, 'POST', vals);
+      toast('Pedido creado');
+    }
 
-  pedidoLines = [];
-  closeModal('modal-pedido');
-  renderAll();
+    pedidoLines = [];
+    closeModal('modal-pedido');
+    data.pedidos = await apiFetch('/orders');
+    renderAll();
+    
+  } catch (error) {
+    toast('Error al guardar el pedido', 'error');
+  }
 }
