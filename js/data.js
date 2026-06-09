@@ -51,6 +51,5 @@ let data = {
   ],
 };
 
-let editingId       = {};
-let confirmCallback = null;
-let pedidoLines     = [];
+
+
