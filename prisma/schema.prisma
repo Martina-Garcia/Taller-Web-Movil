@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id        Int      @id @default(autoincrement())
+  codigo    String   @unique
+  nombre    String
+  categoria String
+  marca     String?
+  pasillo   Int
+  estante   String
+  stock     Int      @default(0)
+  stockMin  Int      @default(0)
+  unidad    String   @default("un")
+  estado    String   @default("Activo")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("products")
+}
+
+model Aisle {
+  id        Int      @id @default(autoincrement())
+  numero    Int      @unique
+  nombre    String
+  categoria String
+  estantes  Int      @default(4)
+  color     String   @default("#52b788")
+  estado    String   @default("Activo")
+  notas     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("aisles")
+}
+
+model Worker {
+  id           Int      @id @default(autoincrement())
+  nombre       String
+  rut          String   @unique
+  turno        String
+  rol          String
+  tel          String?
+  estado       String   @default("Activo")
+  pedidosHoy   Int      @default(0)
+  pedidoActual String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  orders Order[]
+
+  @@map("workers")
+}
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  num       String   @unique
+  cliente   String
+  tel       String?
+  direccion String?
+  entrega   String
+  pickerId  Int?
+  estado    String   @default("Pendiente")
+  fecha     String
+  items     Json     @default("[]")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  picker Worker? @relation(fields: [pickerId], references: [id])
+
+  @@map("orders")
+}

@@ -1,44 +1,80 @@
+import { PrismaService } from '../prisma/prisma.service';
 export declare class ProductsService {
-    private products;
-    create(dto: any): any;
-    findAll(): {
+    private prisma;
+    constructor(prisma: PrismaService);
+    create(dto: any): Promise<{
         id: number;
-        name: string;
-        barcode: string;
-        category: string;
-        currentStock: number;
-        minStock: number;
-        shelf: number;
-        aisleId: number;
-    }[];
-    findOne(id: number): {
+        nombre: string;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        codigo: string;
+        categoria: string;
+        marca: string | null;
+        pasillo: number;
+        estante: string;
+        stock: number;
+        stockMin: number;
+        unidad: string;
+    }>;
+    findAll(): Promise<{
         id: number;
-        name: string;
-        barcode: string;
-        category: string;
-        currentStock: number;
-        minStock: number;
-        shelf: number;
-        aisleId: number;
-    };
-    update(id: number, dto: any): {
+        nombre: string;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        codigo: string;
+        categoria: string;
+        marca: string | null;
+        pasillo: number;
+        estante: string;
+        stock: number;
+        stockMin: number;
+        unidad: string;
+    }[]>;
+    findOne(id: number): Promise<{
         id: number;
-        name: string;
-        barcode: string;
-        category: string;
-        currentStock: number;
-        minStock: number;
-        shelf: number;
-        aisleId: number;
-    };
-    remove(id: number): {
+        nombre: string;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        codigo: string;
+        categoria: string;
+        marca: string | null;
+        pasillo: number;
+        estante: string;
+        stock: number;
+        stockMin: number;
+        unidad: string;
+    }>;
+    update(id: number, dto: any): Promise<{
         id: number;
-        name: string;
-        barcode: string;
-        category: string;
-        currentStock: number;
-        minStock: number;
-        shelf: number;
-        aisleId: number;
-    };
+        nombre: string;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        codigo: string;
+        categoria: string;
+        marca: string | null;
+        pasillo: number;
+        estante: string;
+        stock: number;
+        stockMin: number;
+        unidad: string;
+    }>;
+    remove(id: number): Promise<{
+        id: number;
+        nombre: string;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        codigo: string;
+        categoria: string;
+        marca: string | null;
+        pasillo: number;
+        estante: string;
+        stock: number;
+        stockMin: number;
+        unidad: string;
+    }>;
 }

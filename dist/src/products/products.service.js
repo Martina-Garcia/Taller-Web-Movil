@@ -5,42 +5,42 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductsService = void 0;
 const common_1 = require("@nestjs/common");
+const prisma_service_1 = require("../prisma/prisma.service");
 let ProductsService = class ProductsService {
-    products = [
-        { id: 1, name: 'Monster Energy Original', barcode: '74849302', category: 'Bebestibles', currentStock: 45, minStock: 10, shelf: 3, aisleId: 1 },
-        { id: 2, name: 'Arroz Grado 1 1kg', barcode: '11223344', category: 'Abarrotes', currentStock: 120, minStock: 20, shelf: 1, aisleId: 2 }
-    ];
-    create(dto) {
-        const newP = { id: this.products.length + 1, ...dto };
-        this.products.push(newP);
-        return newP;
+    prisma;
+    constructor(prisma) {
+        this.prisma = prisma;
     }
-    findAll() { return this.products; }
-    findOne(id) {
-        const p = this.products.find(x => x.id === id);
-        if (!p)
-            throw new common_1.NotFoundException(`ID ${id} no existe`);
-        return p;
+    async create(dto) {
+        return this.prisma.product.create({ data: dto });
     }
-    update(id, dto) {
-        const idx = this.products.findIndex(x => x.id === id);
-        if (idx === -1)
-            throw new common_1.NotFoundException(`ID ${id} no existe`);
-        this.products[idx] = { ...this.products[idx], ...dto };
-        return this.products[idx];
+    async findAll() {
+        return this.prisma.product.findMany({ orderBy: { id: 'asc' } });
     }
-    remove(id) {
-        const idx = this.products.findIndex(x => x.id === id);
-        if (idx === -1)
-            throw new common_1.NotFoundException(`ID ${id} no existe`);
-        return this.products.splice(idx, 1)[0];
+    async findOne(id) {
+        const product = await this.prisma.product.findUnique({ where: { id } });
+        if (!product)
+            throw new common_1.NotFoundException(`Producto con ID ${id} no encontrado`);
+        return product;
+    }
+    async update(id, dto) {
+        await this.findOne(id);
+        return this.prisma.product.update({ where: { id }, data: dto });
+    }
+    async remove(id) {
+        await this.findOne(id);
+        return this.prisma.product.delete({ where: { id } });
     }
 };
 exports.ProductsService = ProductsService;
 exports.ProductsService = ProductsService = __decorate([
-    (0, common_1.Injectable)()
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
 ], ProductsService);
 //# sourceMappingURL=products.service.js.map

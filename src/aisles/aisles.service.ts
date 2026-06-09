@@ -1,26 +1,31 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAisleDto } from './dto/create-aisle.dto';
-import { UpdateAisleDto } from './dto/update-aisle.dto';
-
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
+ 
 @Injectable()
 export class AislesService {
-  create(createAisleDto: CreateAisleDto) {
-    return 'This action adds a new aisle';
+  constructor(private prisma: PrismaService) {}
+ 
+  async create(dto: any) {
+    return this.prisma.aisle.create({ data: dto });
   }
-
-  findAll() {
-    return `This action returns all aisles`;
+ 
+  async findAll() {
+    return this.prisma.aisle.findMany({ orderBy: { numero: 'asc' } });
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} aisle`;
+ 
+  async findOne(id: number) {
+    const aisle = await this.prisma.aisle.findUnique({ where: { id } });
+    if (!aisle) throw new NotFoundException(`Pasillo con ID ${id} no encontrado`);
+    return aisle;
   }
-
-  update(id: number, updateAisleDto: UpdateAisleDto) {
-    return `This action updates a #${id} aisle`;
+ 
+  async update(id: number, dto: any) {
+    await this.findOne(id);
+    return this.prisma.aisle.update({ where: { id }, data: dto });
   }
-
-  remove(id: number) {
-    return `This action removes a #${id} aisle`;
+ 
+  async remove(id: number) {
+    await this.findOne(id);
+    return this.prisma.aisle.delete({ where: { id } });
   }
 }

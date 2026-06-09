@@ -1,22 +1,48 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { CreateAisleDto } from './dto/create-aisle.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import { AislesService } from './aisles.service';
 
-@ApiTags('Pasillos y Ubicaciones')
+@ApiTags('Pasillos')
 @Controller('aisles')
 export class AislesController {
+  constructor(private readonly aislesService: AislesService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Crear un nuevo pasillo en la tienda' })
-  @ApiResponse({ status: 201, description: 'Pasillo configurado con éxito.' })
-  create(@Body() createAisleDto: CreateAisleDto) {
-    // ...
+  @ApiOperation({ summary: 'Crear un nuevo pasillo' })
+  @ApiResponse({ status: 201, description: 'Pasillo creado exitosamente' })
+  create(@Body() dto: any) {
+    return this.aislesService.create(dto);
   }
 
-  @Get(':id/locations')
-  @ApiOperation({ summary: 'Obtener todos los estantes/ubicaciones de un pasillo específico' })
-  @ApiResponse({ status: 200, description: 'Retorna la lista de estantes asociados al pasillo.' })
-  getLocationsByAisle(@Param('id') id: string) {
-    // Lógica para devolver estantes (ej. A1, B2) asociados a este pasillo
+  @Get()
+  @ApiOperation({ summary: 'Listar todos los pasillos' })
+  @ApiResponse({ status: 200, description: 'Lista de pasillos' })
+  findAll() {
+    return this.aislesService.findAll();
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Obtener un pasillo por ID' })
+  @ApiParam({ name: 'id', type: Number })
+  @ApiResponse({ status: 200, description: 'Pasillo encontrado' })
+  @ApiResponse({ status: 404, description: 'Pasillo no encontrado' })
+  findOne(@Param('id') id: string) {
+    return this.aislesService.findOne(+id);
+  }
+
+  @Patch(':id')
+  @ApiOperation({ summary: 'Actualizar un pasillo' })
+  @ApiParam({ name: 'id', type: Number })
+  update(@Param('id') id: string, @Body() dto: any) {
+    return this.aislesService.update(+id, dto);
+  }
+
+  @Delete(':id')
+  @HttpCode(204)
+  @ApiOperation({ summary: 'Eliminar un pasillo' })
+  @ApiParam({ name: 'id', type: Number })
+  @ApiResponse({ status: 204, description: 'Pasillo eliminado' })
+  remove(@Param('id') id: string) {
+    return this.aislesService.remove(+id);
   }
 }

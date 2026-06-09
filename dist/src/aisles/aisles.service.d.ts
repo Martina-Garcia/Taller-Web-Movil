@@ -1,9 +1,65 @@
-import { CreateAisleDto } from './dto/create-aisle.dto';
-import { UpdateAisleDto } from './dto/update-aisle.dto';
+import { PrismaService } from '../prisma/prisma.service';
 export declare class AislesService {
-    create(createAisleDto: CreateAisleDto): string;
-    findAll(): string;
-    findOne(id: number): string;
-    update(id: number, updateAisleDto: UpdateAisleDto): string;
-    remove(id: number): string;
+    private prisma;
+    constructor(prisma: PrismaService);
+    create(dto: any): Promise<{
+        id: number;
+        nombre: string;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        categoria: string;
+        numero: number;
+        estantes: number;
+        color: string;
+        notas: string | null;
+    }>;
+    findAll(): Promise<{
+        id: number;
+        nombre: string;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        categoria: string;
+        numero: number;
+        estantes: number;
+        color: string;
+        notas: string | null;
+    }[]>;
+    findOne(id: number): Promise<{
+        id: number;
+        nombre: string;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        categoria: string;
+        numero: number;
+        estantes: number;
+        color: string;
+        notas: string | null;
+    }>;
+    update(id: number, dto: any): Promise<{
+        id: number;
+        nombre: string;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        categoria: string;
+        numero: number;
+        estantes: number;
+        color: string;
+        notas: string | null;
+    }>;
+    remove(id: number): Promise<{
+        id: number;
+        nombre: string;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        categoria: string;
+        numero: number;
+        estantes: number;
+        color: string;
+        notas: string | null;
+    }>;
 }

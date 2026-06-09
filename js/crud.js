@@ -2,6 +2,50 @@
    PickMart — crud.js
    CRUD de entidades + control de modales
 ═══════════════════════════════════════════ */
+const editingId = {};
+
+/* ─── Abrir modal para CREAR (limpiar formulario) ─── */
+function newProducto() {
+  populateSelects();
+  document.getElementById('modal-producto-title').textContent = 'Nuevo Producto';
+  ['prod-codigo','prod-nombre','prod-marca','prod-estante','prod-stock','prod-stock-min'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('prod-categoria').value = '';
+  document.getElementById('prod-unidad').value = 'un';
+  document.getElementById('prod-estado').value = 'Activo';
+  editingId['modal-producto'] = null;
+  openModal('modal-producto');
+}
+
+function newPasillo() {
+  document.getElementById('modal-pasillo-title').textContent = 'Nuevo Pasillo';
+  ['pas-numero','pas-nombre','pas-estantes','pas-notas'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('pas-categoria').value = '';
+  document.getElementById('pas-estado').value = 'Activo';
+  document.getElementById('pas-color').value = '#52b788';
+  editingId['modal-pasillo'] = null;
+  openModal('modal-pasillo');
+}
+
+function newTrabajador() {
+  document.getElementById('modal-trabajador-title').textContent = 'Nuevo Trabajador';
+  ['trab-nombre','trab-rut','trab-tel'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('trab-turno').value = 'Turno A (08:00-16:00)';
+  document.getElementById('trab-rol').value = 'Picker';
+  document.getElementById('trab-estado').value = 'Activo';
+  editingId['modal-trabajador'] = null;
+  openModal('modal-trabajador');
+}
+
+function newPedido() {
+  populateSelects();
+  document.getElementById('modal-pedido-title').textContent = 'Nuevo Pedido';
+  ['ped-cliente','ped-tel','ped-dir'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('ped-entrega').value = 'Despacho a domicilio';
+  pedidoLines = [];
+  renderPedidoLines();
+  editingId['modal-pedido'] = null;
+  openModal('modal-pedido');
+}
 
 /* ─── Modal helpers ─────────────────────── */
 function openModal(id)  { document.getElementById(id).classList.add('open'); }
