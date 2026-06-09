@@ -1,26 +1,37 @@
-import { Injectable } from '@nestjs/common';
-import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
-
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
+ 
 @Injectable()
 export class OrdersService {
-  create(createOrderDto: CreateOrderDto) {
-    return 'This action adds a new order';
+  constructor(private prisma: PrismaService) {}
+ 
+  async create(dto: any) {
+    return this.prisma.order.create({ data: dto });
   }
-
-  findAll() {
-    return `This action returns all orders`;
+ 
+  async findAll() {
+    return this.prisma.order.findMany({
+      orderBy: { id: 'asc' },
+      include: { picker: true },
+    });
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
+ 
+  async findOne(id: number) {
+    const order = await this.prisma.order.findUnique({
+      where: { id },
+      include: { picker: true },
+    });
+    if (!order) throw new NotFoundException(`Pedido con ID ${id} no encontrado`);
+    return order;
   }
-
-  update(id: number, updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
+ 
+  async update(id: number, dto: any) {
+    await this.findOne(id);
+    return this.prisma.order.update({ where: { id }, data: dto });
   }
-
-  remove(id: number) {
-    return `This action removes a #${id} order`;
+ 
+  async remove(id: number) {
+    await this.findOne(id);
+    return this.prisma.order.delete({ where: { id } });
   }
 }

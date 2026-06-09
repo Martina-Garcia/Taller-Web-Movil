@@ -2,7 +2,30 @@
    PickMart — utils.js
    Helpers reutilizables: badges, toast, filtros
 ═══════════════════════════════════════════ */
-
+ 
+/* ─── API Base URL ──────────────────────── */
+// Cambia esta URL por la de tu deploy en producción
+const API_BASE = 'http://localhost:3000/api';
+ 
+async function apiFetch(endpoint, method = 'GET', body = null) {
+  const options = {
+    method,
+    headers: { 'Content-Type': 'application/json' },
+  };
+  if (body) options.body = JSON.stringify(body);
+ 
+  const res = await fetch(`${API_BASE}${endpoint}`, options);
+ 
+  if (res.status === 204) return null; // DELETE exitoso sin contenido
+ 
+  const data = await res.json();
+  if (!res.ok) {
+    const msg = data?.message || `Error ${res.status}`;
+    throw new Error(msg);
+  }
+  return data;
+}
+ 
 /* ─── Status Badges ─────────────────────── */
 function statusBadge(estado) {
   const map = { 'Pendiente':'badge-orange', 'En Proceso':'badge-blue', 'Completado':'badge-green', 'Cancelado':'badge-red' };
@@ -20,7 +43,7 @@ function statusBadgeTrab(estado) {
   const map = { 'Activo':'badge-green', 'Inactivo':'badge-gray', 'Vacaciones':'badge-blue' };
   return `<span class="badge ${map[estado] || 'badge-gray'}">${estado}</span>`;
 }
-
+ 
 /* ─── Toast ─────────────────────────────── */
 function toast(msg, type = 'success') {
   const t = document.createElement('div');
@@ -29,7 +52,7 @@ function toast(msg, type = 'success') {
   document.getElementById('toast-container').appendChild(t);
   setTimeout(() => t.remove(), 3000);
 }
-
+ 
 /* ─── Filtros ───────────────────────────── */
 function filterTable(tableId, query) {
   const q = query.toLowerCase();

@@ -5,28 +5,42 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WorkersService = void 0;
 const common_1 = require("@nestjs/common");
+const prisma_service_1 = require("../prisma/prisma.service");
 let WorkersService = class WorkersService {
-    create(createWorkerDto) {
-        return 'This action adds a new worker';
+    prisma;
+    constructor(prisma) {
+        this.prisma = prisma;
     }
-    findAll() {
-        return `This action returns all workers`;
+    async create(dto) {
+        return this.prisma.worker.create({ data: dto });
     }
-    findOne(id) {
-        return `This action returns a #${id} worker`;
+    async findAll() {
+        return this.prisma.worker.findMany({ orderBy: { id: 'asc' } });
     }
-    update(id, updateWorkerDto) {
-        return `This action updates a #${id} worker`;
+    async findOne(id) {
+        const worker = await this.prisma.worker.findUnique({ where: { id } });
+        if (!worker)
+            throw new common_1.NotFoundException(`Trabajador con ID ${id} no encontrado`);
+        return worker;
     }
-    remove(id) {
-        return `This action removes a #${id} worker`;
+    async update(id, dto) {
+        await this.findOne(id);
+        return this.prisma.worker.update({ where: { id }, data: dto });
+    }
+    async remove(id) {
+        await this.findOne(id);
+        return this.prisma.worker.delete({ where: { id } });
     }
 };
 exports.WorkersService = WorkersService;
 exports.WorkersService = WorkersService = __decorate([
-    (0, common_1.Injectable)()
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
 ], WorkersService);
 //# sourceMappingURL=workers.service.js.map
