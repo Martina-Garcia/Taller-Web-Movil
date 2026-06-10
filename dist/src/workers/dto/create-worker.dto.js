@@ -14,7 +14,12 @@ const swagger_1 = require("@nestjs/swagger");
 class CreateWorkerDto {
     nombre;
     rut;
+    turno;
     rol;
+    tel;
+    estado;
+    pedidosHoy;
+    pedidoActual;
 }
 exports.CreateWorkerDto = CreateWorkerDto;
 __decorate([
@@ -22,11 +27,31 @@ __decorate([
     __metadata("design:type", String)
 ], CreateWorkerDto.prototype, "nombre", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: '12.345.678-9', description: 'RUT chileno válido' }),
+    (0, swagger_1.ApiProperty)({ example: '12.345.678-9', description: 'RUT identificador' }),
     __metadata("design:type", String)
 ], CreateWorkerDto.prototype, "rut", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'Picker', description: 'Rol dentro del sistema' }),
+    (0, swagger_1.ApiProperty)({ example: 'Turno A (08:00-16:00)', description: 'Bloque horario asignado' }),
+    __metadata("design:type", String)
+], CreateWorkerDto.prototype, "turno", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 'Picker', description: 'Rol dentro del supermercado (Picker, Supervisor)' }),
     __metadata("design:type", String)
 ], CreateWorkerDto.prototype, "rol", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: '+56 9 8765 4321', description: 'Número de teléfono celular móvil' }),
+    __metadata("design:type", String)
+], CreateWorkerDto.prototype, "tel", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 'Activo', description: 'Estado laboral (Activo, Vacaciones, Inactivo)' }),
+    __metadata("design:type", String)
+], CreateWorkerDto.prototype, "estado", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 0, required: false, description: 'Pedidos completados en la jornada' }),
+    __metadata("design:type", Number)
+], CreateWorkerDto.prototype, "pedidosHoy", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: null, required: false, nullable: true, description: 'ID del pedido actual' }),
+    __metadata("design:type", String)
+], CreateWorkerDto.prototype, "pedidoActual", void 0);
 //# sourceMappingURL=create-worker.dto.js.map

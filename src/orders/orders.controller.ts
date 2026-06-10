@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { OrdersService } from './orders.service';
+import { CreateOrderDto } from './dto/create-order.dto';
 
 @ApiTags('Pedidos')
 @Controller('orders')
@@ -10,7 +11,7 @@ export class OrdersController {
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo pedido' })
   @ApiResponse({ status: 201, description: 'Pedido creado exitosamente' })
-  create(@Body() dto: any) {
+  create(@Body() dto: CreateOrderDto) {
     return this.ordersService.create(dto);
   }
 

@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { WorkersService } from './workers.service';
+import { CreateWorkerDto } from './dto/create-worker.dto';
 
 @ApiTags('Trabajadores')
 @Controller('workers')
@@ -10,7 +11,7 @@ export class WorkersController {
   @Post()
   @ApiOperation({ summary: 'Registrar un nuevo trabajador' })
   @ApiResponse({ status: 201, description: 'Trabajador creado exitosamente' })
-  create(@Body() dto: any) {
+  create(@Body() dto: CreateWorkerDto) {
     return this.workersService.create(dto);
   }
 

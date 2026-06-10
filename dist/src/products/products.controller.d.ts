@@ -1,14 +1,11 @@
 import { ProductsService } from './products.service';
+import { CreateProductDto } from './dto/create-product.dto';
 export declare class ProductsController {
     private readonly productsService;
     constructor(productsService: ProductsService);
-    create(dto: any): Promise<{
-        id: number;
-        nombre: string;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
+    create(dto: CreateProductDto): Promise<{
         codigo: string;
+        nombre: string;
         categoria: string;
         marca: string | null;
         pasillo: number;
@@ -16,14 +13,14 @@ export declare class ProductsController {
         stock: number;
         stockMin: number;
         unidad: string;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        id: number;
     }>;
     findAll(): Promise<{
-        id: number;
-        nombre: string;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
         codigo: string;
+        nombre: string;
         categoria: string;
         marca: string | null;
         pasillo: number;
@@ -31,14 +28,14 @@ export declare class ProductsController {
         stock: number;
         stockMin: number;
         unidad: string;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        id: number;
     }[]>;
     findOne(id: string): Promise<{
-        id: number;
-        nombre: string;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
         codigo: string;
+        nombre: string;
         categoria: string;
         marca: string | null;
         pasillo: number;
@@ -46,14 +43,14 @@ export declare class ProductsController {
         stock: number;
         stockMin: number;
         unidad: string;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        id: number;
     }>;
     update(id: string, dto: any): Promise<{
-        id: number;
-        nombre: string;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
         codigo: string;
+        nombre: string;
         categoria: string;
         marca: string | null;
         pasillo: number;
@@ -61,14 +58,14 @@ export declare class ProductsController {
         stock: number;
         stockMin: number;
         unidad: string;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        id: number;
     }>;
     remove(id: string): Promise<{
-        id: number;
-        nombre: string;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
         codigo: string;
+        nombre: string;
         categoria: string;
         marca: string | null;
         pasillo: number;
@@ -76,5 +73,9 @@ export declare class ProductsController {
         stock: number;
         stockMin: number;
         unidad: string;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        id: number;
     }>;
 }

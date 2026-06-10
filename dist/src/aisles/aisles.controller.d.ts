@@ -1,65 +1,66 @@
 import { AislesService } from './aisles.service';
+import { CreateAisleDto } from './dto/create-aisle.dto';
 export declare class AislesController {
     private readonly aislesService;
     constructor(aislesService: AislesService);
-    create(dto: any): Promise<{
-        id: number;
-        nombre: string;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
-        categoria: string;
+    create(dto: CreateAisleDto): Promise<{
         numero: number;
+        nombre: string;
+        categoria: string;
         estantes: number;
         color: string;
+        estado: string;
         notas: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        id: number;
     }>;
     findAll(): Promise<{
-        id: number;
-        nombre: string;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
-        categoria: string;
         numero: number;
+        nombre: string;
+        categoria: string;
         estantes: number;
         color: string;
+        estado: string;
         notas: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        id: number;
     }[]>;
     findOne(id: string): Promise<{
-        id: number;
-        nombre: string;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
-        categoria: string;
         numero: number;
+        nombre: string;
+        categoria: string;
         estantes: number;
         color: string;
+        estado: string;
         notas: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        id: number;
     }>;
     update(id: string, dto: any): Promise<{
-        id: number;
-        nombre: string;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
-        categoria: string;
         numero: number;
+        nombre: string;
+        categoria: string;
         estantes: number;
         color: string;
+        estado: string;
         notas: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        id: number;
     }>;
     remove(id: string): Promise<{
-        id: number;
-        nombre: string;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
-        categoria: string;
         numero: number;
+        nombre: string;
+        categoria: string;
         estantes: number;
         color: string;
+        estado: string;
         notas: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        id: number;
     }>;
 }

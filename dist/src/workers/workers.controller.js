@@ -16,6 +16,7 @@ exports.WorkersController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const workers_service_1 = require("./workers.service");
+const create_worker_dto_1 = require("./dto/create-worker.dto");
 let WorkersController = class WorkersController {
     workersService;
     constructor(workersService) {
@@ -44,7 +45,7 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Trabajador creado exitosamente' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [create_worker_dto_1.CreateWorkerDto]),
     __metadata("design:returntype", void 0)
 ], WorkersController.prototype, "create", null);
 __decorate([

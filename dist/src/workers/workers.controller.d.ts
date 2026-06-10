@@ -1,9 +1,9 @@
 import { WorkersService } from './workers.service';
+import { CreateWorkerDto } from './dto/create-worker.dto';
 export declare class WorkersController {
     private readonly workersService;
     constructor(workersService: WorkersService);
-    create(dto: any): Promise<{
-        id: number;
+    create(dto: CreateWorkerDto): Promise<{
         nombre: string;
         rut: string;
         turno: string;
@@ -14,9 +14,9 @@ export declare class WorkersController {
         pedidoActual: string | null;
         createdAt: Date;
         updatedAt: Date;
+        id: number;
     }>;
     findAll(): Promise<{
-        id: number;
         nombre: string;
         rut: string;
         turno: string;
@@ -27,9 +27,9 @@ export declare class WorkersController {
         pedidoActual: string | null;
         createdAt: Date;
         updatedAt: Date;
+        id: number;
     }[]>;
     findOne(id: string): Promise<{
-        id: number;
         nombre: string;
         rut: string;
         turno: string;
@@ -40,9 +40,9 @@ export declare class WorkersController {
         pedidoActual: string | null;
         createdAt: Date;
         updatedAt: Date;
+        id: number;
     }>;
     update(id: string, dto: any): Promise<{
-        id: number;
         nombre: string;
         rut: string;
         turno: string;
@@ -53,9 +53,9 @@ export declare class WorkersController {
         pedidoActual: string | null;
         createdAt: Date;
         updatedAt: Date;
+        id: number;
     }>;
     remove(id: string): Promise<{
-        id: number;
         nombre: string;
         rut: string;
         turno: string;
@@ -66,5 +66,6 @@ export declare class WorkersController {
         pedidoActual: string | null;
         createdAt: Date;
         updatedAt: Date;
+        id: number;
     }>;
 }

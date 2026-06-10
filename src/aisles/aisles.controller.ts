@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { AislesService } from './aisles.service';
+import { CreateAisleDto } from './dto/create-aisle.dto';
 
 @ApiTags('Pasillos')
 @Controller('aisles')
@@ -10,7 +11,7 @@ export class AislesController {
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo pasillo' })
   @ApiResponse({ status: 201, description: 'Pasillo creado exitosamente' })
-  create(@Body() dto: any) {
+  create(@Body() dto: CreateAisleDto) {
     return this.aislesService.create(dto);
   }
 

@@ -16,6 +16,7 @@ exports.AislesController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const aisles_service_1 = require("./aisles.service");
+const create_aisle_dto_1 = require("./dto/create-aisle.dto");
 let AislesController = class AislesController {
     aislesService;
     constructor(aislesService) {
@@ -44,7 +45,7 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Pasillo creado exitosamente' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [create_aisle_dto_1.CreateAisleDto]),
     __metadata("design:returntype", void 0)
 ], AislesController.prototype, "create", null);
 __decorate([
